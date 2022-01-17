@@ -1,4 +1,4 @@
-class Board {
+class BoardModel {
     constructor() {
         this.matrix = new Array(6);
 
@@ -38,4 +38,4 @@ class Board {
     }
 }
 
-export default Board;
+export default BoardModel;

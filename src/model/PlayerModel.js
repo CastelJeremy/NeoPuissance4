@@ -1,4 +1,4 @@
-class Player {
+class PlayerModel {
     constructor(color) {
         this.color = color;
     }
@@ -14,4 +14,4 @@ class Player {
     play() { }
 }
 
-export default Player;
+export default PlayerModel;

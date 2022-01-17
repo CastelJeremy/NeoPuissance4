@@ -1,11 +1,11 @@
-import Board from './Board.js';
-import Player from './Player.js';
+import BoardModel from './BoardModel.js';
+import PlayerModel from './PlayerModel.js';
 
-class Game {
+class GameModel {
     constructor() {
         this.board = null;
-        this.playerOne = new Player('#2196f3');
-        this.playerTwo = new Player('#e64a19');
+        this.playerOne = new PlayerModel('#2196f3');
+        this.playerTwo = new PlayerModel('#e64a19');
         this.state = 0;
         this.turn = null;
     }
@@ -65,7 +65,7 @@ class Game {
     }
 
     start() {
-        this.board = new Board();
+        this.board = new BoardModel();
         this.state = 1;
         this.turn = (this.turn === this.playerOne) ? this.playerTwo : this.playerOne;
     }
@@ -83,4 +83,4 @@ class Game {
     }
 }
 
-export default Game;
+export default GameModel;
