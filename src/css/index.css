@@ -34,7 +34,7 @@ body {
     align-items: center;
 }
 
-#animation, #myCanvas {
+canvas {
     position: absolute;
     top: 50%;
 }

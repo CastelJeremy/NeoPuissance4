@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Neo Puissance 4</title>
     <link rel="stylesheet" href="css/index.css">
+    <script src="index.js" type=module></script>
 </head>
     <body>
         <h1> Neo Puissance 4 </h1>
@@ -11,105 +12,7 @@
 
 
     <div id='wrapper'>
-        <canvas id="animation" width="760" height="660" style="z-index: 2"></canvas>
-        <canvas id="myCanvas" width="760" height="660" style="z-index: 1;"></canvas>
+        <canvas id="animationCanvas" width="760" height="660" style="z-index: 2"></canvas>
+        <canvas id="mainCanvas" width="760" height="660" style="z-index: 1;"></canvas>
     </div>
-
-
-    <script>
-        let canvas = document.getElementById("myCanvas");
-        let ctx = canvas.getContext("2d");
-        let space = 20;
-
-
-        ctx.beginPath();
-        ctx.strokeStyle = "white";
-        ctx.lineWidth = 5;
-        ctx.shadowBlur = 20;
-        ctx.shadowColor = "white";
-        ctx.strokeRect(space,space,canvas.width-40, canvas.height-40);
-
-
-        for(let x=0; x < 7; x++){
-            for(let y=0; y< 6; y++){
-                if((y !== 5)){
-                    ctx.beginPath();
-                    ctx.strokeStyle = "white";
-                    ctx.shadowColor = "white";
-                    ctx.lineWidth = 5;
-                    ctx.arc((x*100)+space*4, (y*100)+space*4, 45, 0, Math.PI*2);
-                    ctx.stroke();
-                    ctx.closePath();
-                }
-                if((y == 5)){ // si matrix contient jeton joueur alors ->
-                    ctx.beginPath();
-                    ctx.shadowBlur = 25;
-                    ctx.strokeStyle = "yellow";
-                    ctx.shadowColor = "yellow";
-                    ctx.lineWidth = 7;
-                    ctx.arc((x*100)+space*4, (y*100)+space*4, 45, 0, Math.PI*2);
-                    ctx.stroke();
-                    ctx.closePath();
-                }
-            }
-        }
-
-
-        let canvAnimation = document.getElementById("animation");
-        let ctxA = canvAnimation.getContext("2d");
-
-        let testLastPiece = 5;
-
-        var y = 0;
-        // var vy = 1;
-        //
-        // var ay = .1;
-
-        let start = null;
-
-        function animate(timestamp) {
-
-            if(start=== null){
-                start = timestamp;
-            }
-
-            let progress = timestamp - start;
-            // clear canvas
-            if((progress % 500) < 6){
-                ctxA.beginPath();
-                ctxA.lineWidth = 7;
-                ctxA.strokeStyle = "red";
-                ctxA.shadowColor = "red";
-                ctxA.shadowBlur = 25;
-                ctxA.clearRect(0,0,canvAnimation.width,canvAnimation.height);
-                ctxA.stroke();
-
-                //draw rectangle
-                ctxA.arc((0*100)+20*4, (y*100)+20*4, 45, 0, Math.PI*2);
-                ctxA.stroke();
-
-                // // udpate velocity based in acceleration
-                // vy += ay;
-                // // update position with velocity
-                // y += vy;
-
-                y++;
-
-                ctxA.closePath();
-            }
-
-            if((y*100)+20*4 !== (testLastPiece*100)+20*4){
-                requestAnimationFrame(animate);
-            }
-
-
-        }
-
-        requestAnimationFrame(animate);
-
-
-    </script>
-
-
-
 </html>

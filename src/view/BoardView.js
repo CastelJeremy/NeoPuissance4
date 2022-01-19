@@ -1,7 +1,8 @@
 class BoardView {
-
-    constructor() {
+    constructor(mainCanvas, animationCanvas) {
         this.animate = false;
+        this.mainCanvas = mainCanvas;
+        this.animationCanvas = animationCanvas;
     }
 
     isAnimate() {
@@ -9,11 +10,11 @@ class BoardView {
     }
 
     // GRH - (NOTE) N'étant pas sur du contenue de la matrix je l'ai imaginé
-    draw(matrix, document){
-
-        let canvas = document.getElementById("myCanvas");
-        let ctx = canvas.getContext("2d");
+    draw(matrix) {
+        let ctx = this.mainCanvas.getContext("2d");
         let space = 20;
+
+        ctx.clearRect(0,0,this.animationCanvas.width,this.animationCanvas.height);
 
         // GRH - On dessine ici le rectangle neon blanc
         ctx.beginPath();
@@ -21,20 +22,19 @@ class BoardView {
         ctx.lineWidth = 5;
         ctx.shadowBlur = 20;
         ctx.shadowColor = "white";
-        ctx.strokeRect(space,space,canvas.width-40, canvas.height-40);
-
+        ctx.strokeRect(space,space,this.mainCanvas.width-40, this.mainCanvas.height-40);
 
         // GRH - On dessine ici les ronds à l'intérieur
         for(let x=0; x < 7; x++){
             for(let y=0; y< 6; y++){
 
                 // GRH - Si il n'y a aucun joueur sur cette position alors rond blanc
-                if(matrix[x][y] == null){
+                if(matrix[y][x] === 0){
                     ctx.beginPath();
                     ctx.strokeStyle = "white";
                     ctx.shadowColor = "white";
                     ctx.lineWidth = 5;
-                    ctx.arc((x*100)+space*4, (y*100)+space*4, 45, 0, Math.PI*2);
+                    ctx.arc((x*100)+space*4, ((5-y)*100)+space*4, 45, 0, Math.PI*2);
                     ctx.stroke();
                     ctx.closePath();
                 }
@@ -45,7 +45,7 @@ class BoardView {
                     ctx.shadowBlur = 25;
 
                     // GRH - On affiche la couleur
-                    if(matrix[x][y] === 'y'){
+                    if(matrix[y][x] === 1){
                         ctx.strokeStyle = "yellow";
                         ctx.shadowColor = "yellow";
                     } else {
@@ -54,7 +54,7 @@ class BoardView {
                     }
 
                     ctx.lineWidth = 7;
-                    ctx.arc((x*100)+space*4, (y*100)+space*4, 45, 0, Math.PI*2);
+                    ctx.arc((x*100)+space*4, ((5-y)*100)+space*4, 45, 0, Math.PI*2);
                     ctx.stroke();
                     ctx.closePath();
                 }
@@ -62,9 +62,8 @@ class BoardView {
         }
     }
 
-    dropAnimation(document, posJeton){
-        let canvAnimation = document.getElementById("animation");
-        let ctxA = canvAnimation.getContext("2d");
+    dropAnimation(posJeton) {
+        let ctxA = this.animationCanvas.getContext("2d");
 
         var y = 0;
         let start = null;
@@ -82,7 +81,7 @@ class BoardView {
                 ctxA.strokeStyle = "red";
                 ctxA.shadowColor = "red";
                 ctxA.shadowBlur = 25;
-                ctxA.clearRect(0,0,canvAnimation.width,canvAnimation.height);
+                ctxA.clearRect(0,0,this.animationCanvas.width,this.animationCanvas.height);
                 ctxA.stroke();
 
                 //draw rectangle
