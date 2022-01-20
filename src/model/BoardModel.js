@@ -21,7 +21,7 @@ class BoardModel {
     }
 
     isFull() {
-        for (let i = 0; i < this.matrix.length; i++)
+        for (let i = 0; i < this.matrix[0].length; i++)
             if (!this.isColumnFull(i))
                 return false;
 
