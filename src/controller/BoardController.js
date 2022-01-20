@@ -4,6 +4,7 @@ class BoardController {
         this.view = view;
 
         view.on('click', (columnId) => model.play(columnId));
+        view.on('animationEnded', () => model.checkBoard());
         model.start();
     }
 }

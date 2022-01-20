@@ -15,12 +15,14 @@ class BoardView extends EventEmitter {
         );
 
         gameModel.on("playerPlayed", ({ columnId, rowId, color }) =>
-            this.dropAnimation(columnId, rowId, color).then(() =>
-                this.draw(
-                    gameModel.getBoard().getMatrix(),
-                    gameModel.getPlayerOne().getColor(),
-                    gameModel.getPlayerTwo().getColor()
-                )
+            this.dropAnimation(columnId, rowId, color)
+        );
+
+        this.on('animationEnded', () =>
+            this.draw(
+                gameModel.getBoard().getMatrix(),
+                gameModel.getPlayerOne().getColor(),
+                gameModel.getPlayerTwo().getColor()
             )
         );
 
@@ -89,37 +91,35 @@ class BoardView extends EventEmitter {
     }
 
     dropAnimation(x, y, color) {
-        return new Promise((resolve) => {
-            this.animate = true;
-            let ctx = this.animationCanvas.getContext("2d");
+        this.animate = true;
+        let ctx = this.animationCanvas.getContext("2d");
             
-            let yTemp = 0;
-            let handler = null;
+        let yTemp = 0;
+        let handler = null;
             
-            function animate() {
-                ctx.beginPath();
-                ctx.lineWidth = 7;
-                ctx.strokeStyle = color;
-                ctx.clearRect(0,0,this.animationCanvas.width,this.animationCanvas.height);
-                ctx.stroke();
+        function animate() {
+            ctx.beginPath();
+            ctx.lineWidth = 7;
+            ctx.strokeStyle = color;
+            ctx.clearRect(0,0,this.animationCanvas.width,this.animationCanvas.height);
+            ctx.stroke();
                 
-                //draw rectangle
-                ctx.arc((x*100)+20*4, ((yTemp)*100)+20*4, 45, 0, Math.PI*2);
-                ctx.stroke();
+            //draw rectangle
+            ctx.arc((x*100)+20*4, ((yTemp)*100)+20*4, 45, 0, Math.PI*2);
+            ctx.stroke();
                 
-                yTemp++;
+            yTemp++;
                 
-                ctx.closePath();
+            ctx.closePath();
                 
-                if(Math.abs(y-6) === yTemp){
-                    clearInterval(handler);
-                    this.animate = false;
-                    resolve();
-                }
+            if(Math.abs(y-6) === yTemp){
+                clearInterval(handler);
+                this.animate = false;
+                this.emit('animationEnded');
             }
+        }
 
-            handler = setInterval(animate.bind(this), 100);
-        })
+        handler = setInterval(animate.bind(this), 100);
     }
 
     onClick(evt){
