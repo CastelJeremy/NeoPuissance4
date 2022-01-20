@@ -9,6 +9,12 @@ window.addEventListener("load", () => {
         document.querySelector("#animationCanvas")
     );
 
+    game.on('stateWin', () => console.log('win'));
+
+    boardView.on('click', (c) => {
+        game.play(c)
+    });
+
     game.start();
 
     setTimeout(() => {

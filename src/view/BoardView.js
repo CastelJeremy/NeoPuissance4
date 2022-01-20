@@ -1,5 +1,8 @@
-class BoardView {
+import EventEmitter from "../EventEmitter.js";
+
+class BoardView extends EventEmitter {
     constructor(gameModel, mainCanvas, animationCanvas) {
+        super();
         this.animate = false;
         this.gameModel = gameModel;
         this.mainCanvas = mainCanvas;
@@ -7,6 +10,7 @@ class BoardView {
 
         gameModel.on('updateBoard', ({ matrix, playerOneColor, playerTwoColor }) => this.draw(matrix, playerOneColor, playerTwoColor));
         gameModel.on('playerPlayed', ({ columnId, rowId, color }) => this.dropAnimation(columnId, rowId, color));
+        animationCanvas.addEventListener('click', this.onClick.bind(this));
     }
 
     isAnimate() {
@@ -73,16 +77,12 @@ class BoardView {
                 ctxA.stroke();
 
                 //draw rectangle
-                console.log(((5-y)*100)+20*4)
                 ctxA.arc((x*100)+20*4, ((yTemp)*100)+20*4, 45, 0, Math.PI*2);
                 ctxA.stroke();
 
                 yTemp++;
 
                 ctxA.closePath();
-
-            console.log(Math.abs(y-6))
-            console.log(yTemp)
 
             if(Math.abs(y-6) === yTemp){
                 clearInterval(handler)
@@ -95,7 +95,12 @@ class BoardView {
     }
 
     onClick(evt){
+        const rect = evt.target.getBoundingClientRect();
+        const x = evt.clientX - rect.left;
+        const columnWidth = (this.animationCanvas.width - 50) / 7;
 
+        if (x < (this.animationCanvas.width - 50) && x > 25)
+            this.emit('click', Math.floor((x - 25) / columnWidth));
     }
 
 }
