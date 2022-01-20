@@ -10,7 +10,7 @@ class BoardView {
     }
 
     // GRH - (NOTE) N'étant pas sur du contenue de la matrix je l'ai imaginé
-    draw(matrix) {
+    draw(matrix, playerOneColor, playerTwoColor) {
         let ctx = this.mainCanvas.getContext("2d");
         let space = 20;
 
@@ -18,46 +18,35 @@ class BoardView {
 
         // GRH - On dessine ici le rectangle neon blanc
         ctx.beginPath();
-        ctx.strokeStyle = "white";
+        ctx.strokeStyle = "#ffffff";
         ctx.lineWidth = 5;
         ctx.shadowBlur = 20;
-        ctx.shadowColor = "white";
+        ctx.shadowColor = "#ffffff";
         ctx.strokeRect(space,space,this.mainCanvas.width-40, this.mainCanvas.height-40);
 
         // GRH - On dessine ici les ronds à l'intérieur
         for(let x=0; x < 7; x++){
             for(let y=0; y< 6; y++){
+                ctx.beginPath();
+                ctx.shadowBlur = 25;
+                ctx.lineWidth = 7;
 
-                // GRH - Si il n'y a aucun joueur sur cette position alors rond blanc
-                if(matrix[y][x] === 0){
-                    ctx.beginPath();
-                    ctx.strokeStyle = "white";
-                    ctx.shadowColor = "white";
+                // GRH - On affiche la couleur
+                if (matrix[y][x] === 0) {
                     ctx.lineWidth = 5;
-                    ctx.arc((x*100)+space*4, ((5-y)*100)+space*4, 45, 0, Math.PI*2);
-                    ctx.stroke();
-                    ctx.closePath();
+                    ctx.strokeStyle = "#ffffff";
+                    ctx.shadowColor = "#ffffff";
+                } else if(matrix[y][x] === 1){
+                    ctx.strokeStyle = playerOneColor;
+                    ctx.shadowColor = playerOneColor;
+                } else {
+                    ctx.strokeStyle = playerTwoColor;
+                    ctx.shadowColor = playerTwoColor;
                 }
 
-                // GRH - Si il y'a un joueur alors on affiche le jeton de sa couleur
-                else {
-                    ctx.beginPath();
-                    ctx.shadowBlur = 25;
-
-                    // GRH - On affiche la couleur
-                    if(matrix[y][x] === 1){
-                        ctx.strokeStyle = "yellow";
-                        ctx.shadowColor = "yellow";
-                    } else {
-                        ctx.strokeStyle = "red";
-                        ctx.shadowColor = "red";
-                    }
-
-                    ctx.lineWidth = 7;
-                    ctx.arc((x*100)+space*4, ((5-y)*100)+space*4, 45, 0, Math.PI*2);
-                    ctx.stroke();
-                    ctx.closePath();
-                }
+                ctx.arc((x*100)+space*4, ((5-y)*100)+space*4, 45, 0, Math.PI*2);
+                ctx.stroke();
+                ctx.closePath();
             }
         }
     }

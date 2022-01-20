@@ -13,7 +13,16 @@ window.addEventListener("load", () => {
     boardView.draw(game.getBoard().getMatrix());
 
     setTimeout(() => {
-        game.play(5);
-        boardView.dropAnimation(5);
+        game.play(2);
+        boardView.draw(
+            game.getBoard().getMatrix(),
+            game.getPlayerOne().getColor(),
+            game.getPlayerTwo().getColor()
+        );
+
+        setTimeout(() => {
+            game.play(5);
+            boardView.dropAnimation(5);
+        }, 500);
     }, 500);
 });
