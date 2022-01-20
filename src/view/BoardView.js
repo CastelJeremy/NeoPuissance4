@@ -1,8 +1,11 @@
 class BoardView {
-    constructor(mainCanvas, animationCanvas) {
+    constructor(gameModel, mainCanvas, animationCanvas) {
         this.animate = false;
+        this.gameModel = gameModel;
         this.mainCanvas = mainCanvas;
         this.animationCanvas = animationCanvas;
+
+        gameModel.on('updateBoard', ({ matrix, playerOneColor, playerTwoColor }) => this.draw(matrix, playerOneColor, playerTwoColor));
     }
 
     isAnimate() {
