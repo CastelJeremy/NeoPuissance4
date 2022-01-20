@@ -26,6 +26,50 @@ class BoardModel {
         return true;
     }
 
+    isConnected(playerId) {
+        for (let j = 0; j < this.matrix[0].length - 3; j++)
+            for (let i = 0; i < this.matrix.length; i++)
+                if (
+                    this.matrix[i][j] == playerId &&
+                    this.matrix[i][j + 1] == playerId &&
+                    this.matrix[i][j + 2] == playerId &&
+                    this.matrix[i][j + 3] == playerId
+                )
+                    return true;
+
+        for (let i = 0; i < this.matrix.length - 3; i++)
+            for (let j = 0; j < this.matrix[i].length; j++)
+                if (
+                    this.matrix[i][j] == playerId &&
+                    this.matrix[i + 1][j] == playerId &&
+                    this.matrix[i + 2][j] == playerId &&
+                    this.matrix[i + 3][j] == playerId
+                )
+                    return true;
+
+        for (let i = 3; i < this.matrix.length; i++)
+            for (let j = 0; j < this.matrix[i].length - 3; j++)
+                if (
+                    this.matrix[i][j] == playerId &&
+                    this.matrix[i - 1][j + 1] == playerId &&
+                    this.matrix[i - 2][j + 2] == playerId &&
+                    this.matrix[i - 3][j + 3] == playerId
+                )
+                    return true;
+
+        for (let i = 3; i < this.matrix.length; i++)
+            for (let j = 3; j < this.matrix[i].length; j++)
+                if (
+                    this.matrix[i][j] == playerId &&
+                    this.matrix[i - 1][j - 1] == playerId &&
+                    this.matrix[i - 2][j - 2] == playerId &&
+                    this.matrix[i - 3][j - 3] == playerId
+                )
+                    return true;
+
+        return false;
+    }
+
     addPlayer(playerId, columnId) {
         for (let i = 0; i < this.matrix.length; i++) {
             if (this.matrix[i][columnId] === 0) {
