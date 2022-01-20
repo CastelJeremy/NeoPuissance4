@@ -58,43 +58,40 @@ class BoardView {
     dropAnimation(x, y, color) {
         let ctxA = this.animationCanvas.getContext("2d");
 
-        var y = 0;
+        let yTemp = 0;
         let start = null;
+        let handler = null;
 
-        function animate(timestamp) {
+        function animate() {
 
-            if(start=== null){
-                start = timestamp;
-            }
-            let progress = timestamp - start;
-
-            if((progress % 500) < 6){
                 ctxA.beginPath();
                 ctxA.lineWidth = 7;
-                ctxA.strokeStyle = "red";
-                ctxA.shadowColor = "red";
+                ctxA.strokeStyle = color;
+                ctxA.shadowColor = color;
                 ctxA.shadowBlur = 25;
                 ctxA.clearRect(0,0,this.animationCanvas.width,this.animationCanvas.height);
                 ctxA.stroke();
 
                 //draw rectangle
                 console.log(((5-y)*100)+20*4)
-                ctxA.arc((posJeton*100)+20*4, ((y)*100)+20*4, 45, 0, Math.PI*2);
+                ctxA.arc((x*100)+20*4, ((yTemp)*100)+20*4, 45, 0, Math.PI*2);
                 ctxA.stroke();
 
-                y++;
+                yTemp++;
 
                 ctxA.closePath();
-            }
 
-            if(y !== posJeton){
-                requestAnimationFrame(animate.bind(this));
-            }
+            console.log(Math.abs(y-6))
+            console.log(yTemp)
 
+            if(Math.abs(y-6) === yTemp){
+                clearInterval(handler)
+            }
 
         }
 
-        requestAnimationFrame(animate.bind(this));
+        //requestAnimationFrame(animate.bind(this));
+        handler = setInterval(animate.bind(this), 500);
     }
 
     onClick(evt){

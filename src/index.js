@@ -14,8 +14,8 @@ window.addEventListener("load", () => {
     setTimeout(() => {
         game.play(2);
 
-        setTimeout(() => {
-            game.play(5);
-        }, 500);
+        // setTimeout(() => {
+        //     game.play(5);
+        // }, 500);
     }, 500);
 });
