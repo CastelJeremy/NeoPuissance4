@@ -8,9 +8,23 @@ class BoardView extends EventEmitter {
         this.mainCanvas = mainCanvas;
         this.animationCanvas = animationCanvas;
 
-        gameModel.on('updateBoard', ({ matrix, playerOneColor, playerTwoColor }) => this.draw(matrix, playerOneColor, playerTwoColor));
-        gameModel.on('playerPlayed', ({ columnId, rowId, color }) => this.dropAnimation(columnId, rowId, color));
-        animationCanvas.addEventListener('click', this.onClick.bind(this));
+        gameModel.on(
+            "updateBoard",
+            ({ matrix, playerOneColor, playerTwoColor }) =>
+                this.draw(matrix, playerOneColor, playerTwoColor)
+        );
+
+        gameModel.on("playerPlayed", ({ columnId, rowId, color }) =>
+            this.dropAnimation(columnId, rowId, color).then(() =>
+                this.draw(
+                    gameModel.getBoard().getMatrix(),
+                    gameModel.getPlayerOne().getColor(),
+                    gameModel.getPlayerTwo().getColor()
+                )
+            )
+        );
+
+        animationCanvas.addEventListener("click", this.onClick.bind(this));
     }
 
     isAnimate() {
@@ -60,47 +74,50 @@ class BoardView extends EventEmitter {
     }
 
     dropAnimation(x, y, color) {
-        let ctxA = this.animationCanvas.getContext("2d");
-
-        let yTemp = 0;
-        let start = null;
-        let handler = null;
-
-        function animate() {
-
-                ctxA.beginPath();
-                ctxA.lineWidth = 7;
-                ctxA.strokeStyle = color;
-                ctxA.shadowColor = color;
-                ctxA.shadowBlur = 25;
-                ctxA.clearRect(0,0,this.animationCanvas.width,this.animationCanvas.height);
-                ctxA.stroke();
-
+        return new Promise((resolve) => {
+            this.animate = true;
+            let ctx = this.animationCanvas.getContext("2d");
+            
+            let yTemp = 0;
+            let handler = null;
+            
+            function animate() {
+                ctx.beginPath();
+                ctx.lineWidth = 7;
+                ctx.strokeStyle = color;
+                ctx.shadowColor = color;
+                ctx.shadowBlur = 25;
+                ctx.clearRect(0,0,this.animationCanvas.width,this.animationCanvas.height);
+                ctx.stroke();
+                
                 //draw rectangle
-                ctxA.arc((x*100)+20*4, ((yTemp)*100)+20*4, 45, 0, Math.PI*2);
-                ctxA.stroke();
-
+                ctx.arc((x*100)+20*4, ((yTemp)*100)+20*4, 45, 0, Math.PI*2);
+                ctx.stroke();
+                
                 yTemp++;
-
-                ctxA.closePath();
-
-            if(Math.abs(y-6) === yTemp){
-                clearInterval(handler)
+                
+                ctx.closePath();
+                
+                if(Math.abs(y-6) === yTemp){
+                    clearInterval(handler);
+                    this.animate = false;
+                    resolve();
+                }
             }
 
-        }
-
-        //requestAnimationFrame(animate.bind(this));
-        handler = setInterval(animate.bind(this), 500);
+            handler = setInterval(animate.bind(this), 200);
+        })
     }
 
     onClick(evt){
-        const rect = evt.target.getBoundingClientRect();
-        const x = evt.clientX - rect.left;
-        const columnWidth = (this.animationCanvas.width - 50) / 7;
-
-        if (x < (this.animationCanvas.width - 50) && x > 25)
-            this.emit('click', Math.floor((x - 25) / columnWidth));
+        if (!this.animate) {
+            const rect = evt.target.getBoundingClientRect();
+            const x = evt.clientX - rect.left;
+            const columnWidth = (this.animationCanvas.width - 50) / 7;
+            
+            if (x < (this.animationCanvas.width - 50) && x > 25)
+                this.emit('click', Math.floor((x - 25) / columnWidth));
+        }
     }
 
 }
