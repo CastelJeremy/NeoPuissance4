@@ -74,7 +74,8 @@ class BoardView {
                 ctxA.stroke();
 
                 //draw rectangle
-                ctxA.arc((posJeton.x*100)+20*4, (y*100)+20*4, 45, 0, Math.PI*2);
+                console.log(((5-y)*100)+20*4)
+                ctxA.arc((posJeton*100)+20*4, ((y)*100)+20*4, 45, 0, Math.PI*2);
                 ctxA.stroke();
 
                 y++;
@@ -82,14 +83,14 @@ class BoardView {
                 ctxA.closePath();
             }
 
-            if(y !== posJeton.y){
-                requestAnimationFrame(animate);
+            if(y !== posJeton){
+                requestAnimationFrame(animate.bind(this));
             }
 
 
         }
 
-        requestAnimationFrame(animate);
+        requestAnimationFrame(animate.bind(this));
     }
 
     onClick(evt){
