@@ -50,7 +50,7 @@ class BoardView extends EventEmitter {
         for(let x=0; x < 7; x++){
             for(let y=0; y< 6; y++){
                 ctx.beginPath();
-                ctx.shadowBlur = 25;
+                ctx.shadowBlur = 20;
                 ctx.lineWidth = 7;
 
                 // GRH - On affiche la couleur
