@@ -8,6 +8,7 @@ class GameModel extends EventEmitter {
         this.board = null;
         this.playerOne = new PlayerModel('#2196f3');
         this.playerTwo = new PlayerModel('#e64a19');
+        this.state = 0;
         this.turn = null;
     }
 
@@ -69,13 +70,15 @@ class GameModel extends EventEmitter {
     }
 
     play(columnId) {
-        if (!this.board.isColumnFull(columnId)) {
+        if (!this.board.isColumnFull(columnId) && this.state === 1) {
             const rowId = this.board.addPlayer(this.turn === this.playerOne ? 1 : 2, columnId);
             this.emit('playerPlayed', { columnId: columnId, rowId: rowId, color: this.turn.getColor() });
             
             if (this.isConnected(this.turn === this.playerOne ? 1 : 2)) {
+                this.state = 2;
                 this.emit('stateWin', this.turn === this.playerOne ? 1 : 2);
             } else if (this.board.isFull()) {
+                this.state = 3;
                 this.emit('stateDraw');
             } else {
                 this.turn = (this.turn === this.playerOne ? this.playerTwo : this.playerOne);
