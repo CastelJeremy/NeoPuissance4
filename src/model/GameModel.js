@@ -6,8 +6,8 @@ class GameModel extends EventEmitter {
     constructor() {
         super();
         this.board = null;
-        this.playerOne = new PlayerModel('#2196f3');
-        this.playerTwo = new PlayerModel('#e64a19');
+        this.playerOne = new PlayerModel('#5ADBFF');
+        this.playerTwo = new PlayerModel('#FF312E');
         this.state = 0;
         this.turn = null;
     }
