@@ -33,8 +33,9 @@ class BoardView extends EventEmitter {
 
     // GRH - (NOTE) N'étant pas sur du contenue de la matrix je l'ai imaginé
     draw(matrix, playerOneColor, playerTwoColor) {
-        let ctx = this.mainCanvas.getContext("2d");
-        let space = 20;
+        const ctx = this.mainCanvas.getContext("2d");
+        const space = 20;
+        const radius = 15;
 
         ctx.clearRect(0,0,this.animationCanvas.width,this.animationCanvas.height);
 
@@ -44,7 +45,17 @@ class BoardView extends EventEmitter {
         ctx.lineWidth = 5;
         ctx.shadowBlur = 20;
         ctx.shadowColor = "#ffffff";
-        ctx.strokeRect(space,space,this.mainCanvas.width-40, this.mainCanvas.height-40);
+        ctx.moveTo(space + radius, space);
+        ctx.lineTo(this.mainCanvas.width - radius - space, space);
+        ctx.quadraticCurveTo(this.mainCanvas.width - space, space, this.mainCanvas.width - space, space + radius);
+        ctx.lineTo(this.mainCanvas.width - space, this.mainCanvas.height - space - radius);
+        ctx.quadraticCurveTo(this.mainCanvas.width - space, this.mainCanvas.height - space, this.mainCanvas.width - radius - space, this.mainCanvas.height - space);
+        ctx.lineTo(space + radius, this.mainCanvas.height - space);
+        ctx.quadraticCurveTo(space, this.mainCanvas.height - space, space, this.mainCanvas.height - space - radius);
+        ctx.lineTo(space, space + radius);
+        ctx.quadraticCurveTo(space, space, space + radius, space);
+        ctx.closePath();
+        ctx.stroke();
 
         // GRH - On dessine ici les ronds à l'intérieur
         for(let x=0; x < 7; x++){
@@ -105,7 +116,7 @@ class BoardView extends EventEmitter {
                 }
             }
 
-            handler = setInterval(animate.bind(this), 200);
+            handler = setInterval(animate.bind(this), 100);
         })
     }
 
