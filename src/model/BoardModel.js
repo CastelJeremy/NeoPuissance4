@@ -14,16 +14,14 @@ class BoardModel {
 
     isColumnFull(columnId) {
         for (let i = 0; i < this.matrix.length; i++)
-            if (this.matrix[i][columnId] === 0)
-                return false;
+            if (this.matrix[i][columnId] === 0) return false;
 
         return true;
     }
 
     isFull() {
         for (let i = 0; i < this.matrix[0].length; i++)
-            if (!this.isColumnFull(i))
-                return false;
+            if (!this.isColumnFull(i)) return false;
 
         return true;
     }

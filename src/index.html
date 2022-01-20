@@ -1,19 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Neo Puissance 4</title>
-    <link rel="stylesheet" href="css/index.css">
-    <script src="index.js" type=module></script>
-</head>
+    <head>
+        <meta charset="UTF-8" />
+        <title>Neo Connect 4</title>
+        <link rel="stylesheet" href="css/index.css" />
+        <script src="index.js" type="module"></script>
+    </head>
     <body>
-        <h1> Neo Puissance 4 </h1>
-        <div id='wrapper'>
-            <canvas id="animationCanvas" width="760" height="660" style="z-index: 2"></canvas>
-            <canvas id="mainCanvas" width="760" height="660" style="z-index: 1;"></canvas>
+        <h1>Neo Connect 4</h1>
+        <div id="wrapper">
+            <canvas
+                id="animationCanvas"
+                width="760"
+                height="660"
+                style="z-index: 2"
+            ></canvas>
+            <canvas
+                id="mainCanvas"
+                width="760"
+                height="660"
+                style="z-index: 1"
+            ></canvas>
         </div>
 
-        <div id="gameEndModal" style="display: none;">
+        <div id="gameEndModal" style="display: none">
             <h1 id="title"></h1>
             <h2 id="subtitle"></h2>
         </div>

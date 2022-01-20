@@ -11,7 +11,7 @@ class PlayerModel {
         this.color = color;
     }
 
-    play() { }
+    play() {}
 }
 
 export default PlayerModel;
