@@ -69,8 +69,8 @@ class GameModel extends EventEmitter {
     }
 
     play(columnId) {
-        this.board.addPlayer(this.turn === this.playerOne ? 1 : 2, columnId);
-        this.emit('updateBoard', { matrix: this.board.getMatrix(), playerOneColor: this.playerOne.getColor(), playerTwoColor: this.playerTwo.getColor() });
+        const rowId = this.board.addPlayer(this.turn === this.playerOne ? 1 : 2, columnId);
+        this.emit('playerPlayed', { columnId: columnId, rowId: rowId, color: this.turn.getColor() });
 
         if (this.isConnected(this.turn === this.playerOne ? 1 : 2)) {
             this.emit('stateWin', this.turn === this.playerOne ? 1 : 2);

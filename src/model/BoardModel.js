@@ -32,7 +32,7 @@ class BoardModel {
         for (let i = 0; i < this.matrix.length; i++) {
             if (this.matrix[i][columnId] === 0) {
                 this.matrix[i][columnId] = playerId;
-                break;
+                return i;
             }
         }
     }

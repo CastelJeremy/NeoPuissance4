@@ -6,6 +6,7 @@ class BoardView {
         this.animationCanvas = animationCanvas;
 
         gameModel.on('updateBoard', ({ matrix, playerOneColor, playerTwoColor }) => this.draw(matrix, playerOneColor, playerTwoColor));
+        gameModel.on('playerPlayed', ({ columnId, rowId, color }) => this.dropAnimation(columnId, rowId, color));
     }
 
     isAnimate() {
@@ -54,7 +55,7 @@ class BoardView {
         }
     }
 
-    dropAnimation(posJeton) {
+    dropAnimation(x, y, color) {
         let ctxA = this.animationCanvas.getContext("2d");
 
         var y = 0;
