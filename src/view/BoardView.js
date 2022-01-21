@@ -29,6 +29,8 @@ class BoardView extends EventEmitter {
         );
 
         animationCanvas.addEventListener('click', this.onClick.bind(this));
+
+        this.loadingAnimation();
     }
 
     isAnimate() {
@@ -133,6 +135,76 @@ class BoardView extends EventEmitter {
                 }
             }
         }
+    }
+
+    loadingAnimation() {
+        this.animate = true;
+        let start = null;
+
+        const ctx = this.mainCanvas.getContext('2d');
+        const tokenLength = Math.PI * 45 * 2;
+        const totalLength =
+            this.mainCanvas.height * 2 +
+            this.mainCanvas.width * 2 -
+            this.margin * 8;
+
+        ctx.lineWidth = 5;
+
+        const animate = (timestamp) => {
+            if (!start) start = timestamp;
+
+            const elapsed = timestamp - start;
+
+            if (elapsed > 400) {
+                ctx.clearRect(
+                    0,
+                    0,
+                    this.mainCanvas.width,
+                    this.mainCanvas.height
+                );
+                ctx.shadowBlur = 15;
+                ctx.shadowColor = '#ffffff';
+                ctx.strokeStyle = '#ffffff';
+
+                for (let i = 0; i < 2; i++) {
+                    ctx.shadowOffsetX = i === 0 ? 2 : -2;
+                    ctx.shadowOffsetY = i === 0 ? 2 : -2;
+                    ctx.setLineDash([
+                        totalLength * ((elapsed - 400) / 4000),
+                        totalLength,
+                    ]);
+                    ctx.stroke(this.getFramePath());
+
+                    for (let x = 0; x < 7; x++) {
+                        for (let y = 0; y < 6; y++) {
+                            ctx.setLineDash([
+                                tokenLength * ((elapsed - 400) / 4000),
+                                tokenLength,
+                            ]);
+                            ctx.beginPath();
+                            ctx.arc(
+                                x * 100 + this.margin * 4,
+                                (5 - y) * 100 + this.margin * 4,
+                                45,
+                                0,
+                                Math.PI * 2
+                            );
+                            ctx.stroke();
+                        }
+                    }
+                }
+            }
+
+            if (elapsed < 4400) {
+                window.requestAnimationFrame(animate.bind(this));
+            } else {
+                this.animate = false;
+                ctx.setLineDash([]);
+                this.emit('loadingAnimationEnded');
+            }
+        };
+
+        window.requestAnimationFrame(animate.bind(this));
     }
 
     dropAnimation(x, y, color) {
