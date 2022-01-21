@@ -7,6 +7,8 @@ class BoardView extends EventEmitter {
         this.gameModel = gameModel;
         this.mainCanvas = mainCanvas;
         this.animationCanvas = animationCanvas;
+        this.margin = 20;
+        this.borderRadius = 15;
 
         gameModel.on(
             'updateBoard',
@@ -33,11 +35,54 @@ class BoardView extends EventEmitter {
         return this.animate;
     }
 
+    getFramePath() {
+        const path = new Path2D();
+
+        path.moveTo(this.margin + this.borderRadius, this.margin);
+        path.lineTo(
+            this.mainCanvas.width - this.borderRadius - this.margin,
+            this.margin
+        );
+        path.quadraticCurveTo(
+            this.mainCanvas.width - this.margin,
+            this.margin,
+            this.mainCanvas.width - this.margin,
+            this.margin + this.borderRadius
+        );
+        path.lineTo(
+            this.mainCanvas.width - this.margin,
+            this.mainCanvas.height - this.margin - this.borderRadius
+        );
+        path.quadraticCurveTo(
+            this.mainCanvas.width - this.margin,
+            this.mainCanvas.height - this.margin,
+            this.mainCanvas.width - this.borderRadius - this.margin,
+            this.mainCanvas.height - this.margin
+        );
+        path.lineTo(
+            this.margin + this.borderRadius,
+            this.mainCanvas.height - this.margin
+        );
+        path.quadraticCurveTo(
+            this.margin,
+            this.mainCanvas.height - this.margin,
+            this.margin,
+            this.mainCanvas.height - this.margin - this.borderRadius
+        );
+        path.lineTo(this.margin, this.margin + this.borderRadius);
+        path.quadraticCurveTo(
+            this.margin,
+            this.margin,
+            this.margin + this.borderRadius,
+            this.margin
+        );
+
+        return path;
+    }
+
     // GRH - (NOTE) N'étant pas sur du contenue de la matrix je l'ai imaginé
     draw(matrix, playerOneColor, playerTwoColor) {
         const ctx = this.mainCanvas.getContext('2d');
-        const space = 20;
-        const radius = 15;
 
         ctx.clearRect(
             0,
@@ -51,40 +96,11 @@ class BoardView extends EventEmitter {
             ctx.shadowOffsetY = i === 0 ? 2 : -2;
 
             // GRH - On dessine ici le rectangle neon blanc
-            ctx.beginPath();
             ctx.strokeStyle = '#ffffff';
             ctx.lineWidth = 5;
             ctx.shadowBlur = 15;
             ctx.shadowColor = '#ffffff';
-            ctx.moveTo(space + radius, space);
-            ctx.lineTo(this.mainCanvas.width - radius - space, space);
-            ctx.quadraticCurveTo(
-                this.mainCanvas.width - space,
-                space,
-                this.mainCanvas.width - space,
-                space + radius
-            );
-            ctx.lineTo(
-                this.mainCanvas.width - space,
-                this.mainCanvas.height - space - radius
-            );
-            ctx.quadraticCurveTo(
-                this.mainCanvas.width - space,
-                this.mainCanvas.height - space,
-                this.mainCanvas.width - radius - space,
-                this.mainCanvas.height - space
-            );
-            ctx.lineTo(space + radius, this.mainCanvas.height - space);
-            ctx.quadraticCurveTo(
-                space,
-                this.mainCanvas.height - space,
-                space,
-                this.mainCanvas.height - space - radius
-            );
-            ctx.lineTo(space, space + radius);
-            ctx.quadraticCurveTo(space, space, space + radius, space);
-            ctx.closePath();
-            ctx.stroke();
+            ctx.stroke(this.getFramePath());
 
             // GRH - On dessine ici les ronds à l'intérieur
             for (let x = 0; x < 7; x++) {
@@ -106,8 +122,8 @@ class BoardView extends EventEmitter {
                     }
 
                     ctx.arc(
-                        x * 100 + space * 4,
-                        (5 - y) * 100 + space * 4,
+                        x * 100 + this.margin * 4,
+                        (5 - y) * 100 + this.margin * 4,
                         45,
                         0,
                         Math.PI * 2
