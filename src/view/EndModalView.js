@@ -11,8 +11,8 @@ class EndModalView {
     }
 
     toggle(win, player) {
-        this.modalElement.style.display = this.visible ? 'none' : 'block';
-        this.modalTitleElement.innerText = win ? 'Win !' : 'Draw...';
+        this.modalElement.style.display = this.visible ? 'none' : 'flex';
+        this.modalTitleElement.innerText = win ? 'You Win !' : 'Draw...';
         this.modalSubtitleElement.innerText = player ? 'Player ' + player : '';
         this.visible = !this.visible;
     }

@@ -6,26 +6,88 @@
         <link rel="stylesheet" href="css/index.css" />
         <script src="index.js" type="module"></script>
     </head>
+
     <body>
-        <h1>Neo Connect 4</h1>
-        <div id="wrapper">
-            <canvas
-                id="animationCanvas"
-                width="760"
-                height="660"
-                style="z-index: 2"
-            ></canvas>
-            <canvas
-                id="mainCanvas"
-                width="760"
-                height="660"
-                style="z-index: 1"
-            ></canvas>
+
+    <div id="titre">
+        <h1>N</h1>
+        <h1 class="flicker-slow">e</h1>
+        <h1>o P</h1>
+        <h1 class="flicker-fast">u</h1>
+        <h1>i</h1>
+        <h1 class="flicker-slow">ss</h1>
+        <h1>a</h1>
+        <h1 class="flicker-fast">n</h1>
+        <h1 class="">c</h1>
+        <h1>e 4</h1>
+
+    </div>
+
+
+        <div id="mainBox">
+
+            <div id="toolsBox" class="flicker-superslow">
+
+                <table>
+                    <tr>
+                        <td><label for="colorP1"> Player One: </label></td>
+                        <td><input type="color" id="colorP1" value="#5ADBFF"></td>
+                    </tr>
+                    <tr>
+                        <td><label for="colorP2"> Player Two: </label></td>
+                        <td><input type="color" id="colorP2" value="#FF312E"></td>
+                    </tr>
+                    <tr>
+                        <td><label for="difficulty"> Difficulty: </label></td>
+                        <td>
+                            <select name="difficulty" id="difficulty">
+                            <option value="easy">Easy</option>
+                            <option value="medium">Medium</option>
+                            <option value="hard">Hard</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><label for="bot"> Bot: </label></td>
+                        <td>
+                            <input type="checkbox" id="bot">
+                            <span class="slider round"></span>
+                        </td>
+                    </tr>
+                </table>
+
+
+            </div>
+
+            <div id="wrapper" class="flicker-ultraslow">
+                <canvas
+                        id="animationCanvas"
+                        width="760"
+                        height="660"
+                        style="z-index: 2"
+                ></canvas>
+                <canvas
+                        id="mainCanvas"
+                        width="760"
+                        height="660"
+                        style="z-index: 1"
+                ></canvas>
+
+            </div>
+
+            <div id="scoreBox">
+            </div>
+
         </div>
 
+
+
         <div id="gameEndModal" style="display: none">
-            <h1 id="title"></h1>
-            <h2 id="subtitle"></h2>
+            <div id="textModal">
+                <h1 id="title"></h1>
+                <h2 id="subtitle"></h2>
+                <button class="button" id="retry" onclick="">Retry</button>
+            </div>
         </div>
     </body>
 </html>

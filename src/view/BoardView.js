@@ -141,6 +141,19 @@ class BoardView extends EventEmitter {
         this.animate = true;
         let start = null;
 
+        // clean old anim canva
+        const ctxA = this.animationCanvas.getContext('2d');
+        ctxA.beginPath();
+        ctxA.clearRect(
+            0,
+            0,
+            this.animationCanvas.width,
+            this.animationCanvas.height
+        );
+        ctxA.stroke();
+        ctxA.closePath();
+
+
         const ctx = this.mainCanvas.getContext('2d');
         const tokenLength = Math.PI * 45 * 2;
         const totalLength =
@@ -226,7 +239,6 @@ class BoardView extends EventEmitter {
             );
             ctx.stroke();
 
-            //draw rectangle
             ctx.arc(x * 100 + 20 * 4, yTemp * 100 + 20 * 4, 45, 0, Math.PI * 2);
             ctx.stroke();
 
