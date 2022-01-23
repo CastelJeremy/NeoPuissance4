@@ -212,7 +212,11 @@ class BoardView extends EventEmitter {
         const ctx = this.animationCanvas.getContext('2d');
 
         let yTemp = 0;
+        let rebond = Math.round((Math.abs(y-6)/2))
+        console.log(rebond)
         let handler = null;
+
+        let doRebond = false;
 
         function animate() {
             ctx.beginPath();
@@ -229,20 +233,32 @@ class BoardView extends EventEmitter {
             ctx.arc(x * 100 + 20 * 4, yTemp * 100 + 20 * 4, 45, 0, Math.PI * 2);
             ctx.stroke();
 
-            yTemp++;
+            if(!doRebond){
+                yTemp++;
+            } else {
+                yTemp--;
+            }
 
             ctx.closePath();
 
-            if (Math.abs(y - 6) === yTemp) {
-                clearInterval(handler);
-                ctx.clearRect(
-                    0,
-                    0,
-                    this.animationCanvas.width,
-                    this.animationCanvas.height
-                );
-                this.animate = false;
-                this.emit('animationEnded');
+            if (((Math.abs(y - 6) === yTemp) && !doRebond) || ((yTemp == Math.abs(rebond-5)-y) && (doRebond == true))) {
+                if(((yTemp == Math.abs(rebond-5)-y) && (doRebond == true))){
+                    doRebond = false;
+                } else if (rebond !== 1){
+                    doRebond = true;
+                    rebond--;
+                    yTemp--;
+                } else {
+                    clearInterval(handler);
+                    ctx.clearRect(
+                        0,
+                        0,
+                        this.animationCanvas.width,
+                        this.animationCanvas.height
+                    );
+                    this.animate = false;
+                    this.emit('animationEnded');
+                }
             }
         }
 
