@@ -10,6 +10,7 @@ class GameModel extends EventEmitter {
         this.playerTwo = new PlayerModel('#FF312E');
         this.state = 0;
         this.turn = null;
+        this.startingTurn = null;
 
         this.playerOne.on('colorUpdate', () =>
             this.emit('updateBoard', {
@@ -46,8 +47,11 @@ class GameModel extends EventEmitter {
     start() {
         this.board = new BoardModel();
         this.state = 1;
-        this.turn =
-            this.turn === this.playerOne ? this.playerTwo : this.playerOne;
+        this.startingTurn =
+            this.startingTurn === this.playerOne
+                ? this.playerTwo
+                : this.playerOne;
+        this.turn = this.startingTurn;
 
         this.emit('updateBoard', {
             matrix: this.board.getMatrix(),
