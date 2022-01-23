@@ -141,19 +141,6 @@ class BoardView extends EventEmitter {
         this.animate = true;
         let start = null;
 
-        // clean old anim canva
-        const ctxA = this.animationCanvas.getContext('2d');
-        ctxA.beginPath();
-        ctxA.clearRect(
-            0,
-            0,
-            this.animationCanvas.width,
-            this.animationCanvas.height
-        );
-        ctxA.stroke();
-        ctxA.closePath();
-
-
         const ctx = this.mainCanvas.getContext('2d');
         const tokenLength = Math.PI * 45 * 2;
         const totalLength =
@@ -248,6 +235,12 @@ class BoardView extends EventEmitter {
 
             if (Math.abs(y - 6) === yTemp) {
                 clearInterval(handler);
+                ctx.clearRect(
+                    0,
+                    0,
+                    this.animationCanvas.width,
+                    this.animationCanvas.height
+                );
                 this.animate = false;
                 this.emit('animationEnded');
             }

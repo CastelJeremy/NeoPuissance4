@@ -2,8 +2,9 @@ import GameModel from './model/GameModel.js';
 import BoardView from './view/BoardView.js';
 import EndModalView from './view/EndModalView.js';
 import BoardController from './controller/BoardController.js';
+import EndModalController from './controller/EndModalController.js';
 
-function startGame(){
+window.addEventListener('load', () => {
     const gameModel = new GameModel();
     const boardView = new BoardView(
         gameModel,
@@ -15,14 +16,5 @@ function startGame(){
         document.querySelector('#gameEndModal')
     );
     const boardController = new BoardController(gameModel, boardView);
-}
-
-
-window.addEventListener('load', () => {
-    startGame();
-});
-
-document.getElementById("retry").addEventListener('click', () => {
-    document.getElementById("gameEndModal").style.display = "none";
-    startGame();
+    const endModalController = new EndModalController(gameModel, endModalView);
 });
