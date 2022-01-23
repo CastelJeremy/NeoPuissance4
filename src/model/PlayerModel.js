@@ -1,4 +1,4 @@
-import EventEmitter from "../EventEmitter.js";
+import EventEmitter from '../EventEmitter.js';
 
 class PlayerModel extends EventEmitter {
     constructor(color) {
