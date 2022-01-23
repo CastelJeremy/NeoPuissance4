@@ -84,7 +84,7 @@ canvas {
     cursor: pointer;
 }
 
-.button:focus {
+.button:active {
     box-shadow: 0 0 20px white;
 }
 
