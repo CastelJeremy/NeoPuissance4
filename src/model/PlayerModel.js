@@ -14,8 +14,6 @@ class PlayerModel extends EventEmitter {
         this.color = color;
         this.emit('colorUpdate');
     }
-
-    play() {}
 }
 
 export default PlayerModel;

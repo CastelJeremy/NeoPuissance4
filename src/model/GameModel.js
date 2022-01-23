@@ -1,6 +1,7 @@
 import EventEmitter from '../EventEmitter.js';
 import BoardModel from './BoardModel.js';
 import PlayerModel from './PlayerModel.js';
+import BotModel from './BotModel.js';
 
 class GameModel extends EventEmitter {
     constructor() {
@@ -44,6 +45,29 @@ class GameModel extends EventEmitter {
         return this.turn;
     }
 
+    toggleBot() {
+        const oldPlayerTwo = this.playerTwo;
+
+        if (this.playerTwo instanceof BotModel) {
+            this.playerTwo = new PlayerModel(oldPlayerTwo.getColor());
+        } else {
+            this.playerTwo = new BotModel(oldPlayerTwo.getColor());
+        }
+
+        if (this.turn === oldPlayerTwo) this.turn = this.playerTwo;
+
+        this.playerTwo.on('colorUpdate', () =>
+            this.emit('updateBoard', {
+                matrix: this.board.getMatrix(),
+                playerOneColor: this.playerOne.getColor(),
+                playerTwoColor: this.playerTwo.getColor(),
+            })
+        );
+
+        if (this.turn instanceof BotModel)
+            this.play(this.turn.play(this.board));
+    }
+
     start() {
         this.board = new BoardModel();
         this.state = 1;
@@ -58,6 +82,9 @@ class GameModel extends EventEmitter {
             playerOneColor: this.playerOne.getColor(),
             playerTwoColor: this.playerTwo.getColor(),
         });
+
+        if (this.turn instanceof BotModel)
+            this.play(this.turn.play(this.board));
     }
 
     play(columnId) {
@@ -85,6 +112,9 @@ class GameModel extends EventEmitter {
         } else {
             this.turn =
                 this.turn === this.playerOne ? this.playerTwo : this.playerOne;
+
+            if (this.turn instanceof BotModel)
+                this.play(this.turn.play(this.board));
         }
     }
 }

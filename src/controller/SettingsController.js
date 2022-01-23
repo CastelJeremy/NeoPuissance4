@@ -10,6 +10,10 @@ class SettingsController {
                 model.getPlayerTwo().setColor(event.color);
             }
         });
+
+        view.on('botUpdate', (enable) => {
+            model.toggleBot();
+        });
     }
 }
 

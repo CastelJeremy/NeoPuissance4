@@ -12,12 +12,16 @@ class SettingsView extends EventEmitter {
 
         this.playerOneColorElement.value = gameModel.getPlayerOne().getColor();
         this.playerTwoColorElement.value = gameModel.getPlayerTwo().getColor();
+        this.botElement.checked = false;
 
         this.playerOneColorElement.addEventListener('change', (event) =>
             this.emit('colorUpdate', { player: 1, color: event.target.value })
         );
         this.playerTwoColorElement.addEventListener('change', (event) =>
             this.emit('colorUpdate', { player: 2, color: event.target.value })
+        );
+        this.botElement.addEventListener('change', (event) =>
+            this.emit('botUpdate', event.checked)
         );
     }
 }
