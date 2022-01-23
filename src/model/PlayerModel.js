@@ -1,5 +1,8 @@
-class PlayerModel {
+import EventEmitter from "../EventEmitter.js";
+
+class PlayerModel extends EventEmitter {
     constructor(color) {
+        super();
         this.color = color;
     }
 
@@ -9,6 +12,7 @@ class PlayerModel {
 
     setColor(color) {
         this.color = color;
+        this.emit('colorUpdate');
     }
 
     play() {}

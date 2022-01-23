@@ -10,6 +10,21 @@ class GameModel extends EventEmitter {
         this.playerTwo = new PlayerModel('#FF312E');
         this.state = 0;
         this.turn = null;
+
+        this.playerOne.on('colorUpdate', () =>
+            this.emit('updateBoard', {
+                matrix: this.board.getMatrix(),
+                playerOneColor: this.playerOne.getColor(),
+                playerTwoColor: this.playerTwo.getColor(),
+            })
+        );
+        this.playerTwo.on('colorUpdate', () =>
+            this.emit('updateBoard', {
+                matrix: this.board.getMatrix(),
+                playerOneColor: this.playerOne.getColor(),
+                playerTwoColor: this.playerTwo.getColor(),
+            })
+        );
     }
 
     getBoard() {
@@ -20,16 +35,8 @@ class GameModel extends EventEmitter {
         return this.playerOne;
     }
 
-    setPlayerOne(playerOne) {
-        this.playerOne = playerOne;
-    }
-
     getPlayerTwo() {
         return this.playerTwo;
-    }
-
-    setPlayerTwo(playerTwo) {
-        this.playerTwo = playerTwo;
     }
 
     getTurn() {
