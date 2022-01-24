@@ -8,6 +8,9 @@
     </head>
 
     <body>
+    <audio autoplay hidden>
+        <source src="css/background.mp3" type="audio/mpeg">
+    </audio>
         <div id="titre">
             <h1>N</h1>
             <h1 class="flicker-slow">e</h1>
@@ -47,6 +50,15 @@
                         <td>
                             <input type="checkbox" id="bot" />
                             <span class="slider round"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><label for="startPlayer"> Starting : </label></td>
+                        <td>
+                            <select name="startPlayer" id="startPlayer">
+                                <option value="one">Player One</option>
+                                <option value="two">Player Two</option>
+                            </select>
                         </td>
                     </tr>
                 </table>
