@@ -213,7 +213,6 @@ class BoardView extends EventEmitter {
 
         let yTemp = 0;
         let rebond = Math.round((Math.abs(y-6)/2))
-        console.log(rebond)
         let handler = null;
 
         let doRebond = false;
