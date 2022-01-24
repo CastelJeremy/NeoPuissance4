@@ -11,7 +11,7 @@ class GameModel extends EventEmitter {
         this.playerTwo = new PlayerModel('#FF312E');
         this.state = 0;
         this.turn = null;
-        this.startingTurn = null;
+        this.startingTurn = 'one';
 
         this.playerOne.on('colorUpdate', () =>
             this.emit('updateBoard', {
@@ -45,6 +45,15 @@ class GameModel extends EventEmitter {
         return this.turn;
     }
 
+    getStartingTurn() {
+        return this.startingTurn;
+    }
+
+    setStartingTurn(startingTurn) {
+        this.startingTurn = startingTurn;
+        this.emit('starterUpdate', this.startingTurn);
+    }
+
     toggleBot() {
         const oldPlayerTwo = this.playerTwo;
 
@@ -71,11 +80,11 @@ class GameModel extends EventEmitter {
     start() {
         this.board = new BoardModel();
         this.state = 1;
-        this.startingTurn =
-            this.startingTurn === this.playerOne
-                ? this.playerTwo
-                : this.playerOne;
-        this.turn = this.startingTurn;
+
+        this.turn =
+            this.startingTurn === 'one' ? this.playerOne : this.playerTwo;
+
+        this.setStartingTurn(this.startingTurn === 'one' ? 'two' : 'one');
 
         this.emit('updateBoard', {
             matrix: this.board.getMatrix(),

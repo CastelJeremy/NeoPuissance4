@@ -11,6 +11,10 @@ class SettingsController {
             }
         });
 
+        view.on('starterUpdate', (playerValue) => {
+            model.setStartingTurn(playerValue);
+        });
+
         view.on('botUpdate', (enable) => {
             model.toggleBot();
         });
