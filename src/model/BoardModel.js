@@ -12,6 +12,10 @@ class BoardModel {
         return this.matrix;
     }
 
+    setMatrix(matrix) {
+        this.matrix = matrix;
+    }
+
     isColumnFull(columnId) {
         for (let i = 0; i < this.matrix.length; i++)
             if (this.matrix[i][columnId] === 0) return false;
@@ -77,6 +81,23 @@ class BoardModel {
                 return i;
             }
         }
+    }
+
+    clone() {
+        const clone = new BoardModel();
+        const matrixClone = new Array(6);
+
+        for (let i = 0; i < this.matrix.length; i++) {
+            matrixClone[i] = new Array(7);
+
+            for (let j = 0; j < this.matrix[i].length; j++) {
+                matrixClone[i][j] = this.matrix[i][j];
+            }
+        }
+
+        clone.setMatrix(matrixClone);
+
+        return clone;
     }
 }
 
