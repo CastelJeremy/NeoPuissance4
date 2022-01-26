@@ -45,68 +45,54 @@ class Bot extends PlayerModel {
         let score = 0;
 
         if (board.isConnected(2)) return Infinity;
-
+        
         if (board.isConnected(1)) return -Infinity;
 
-        for (let i = 0; i < board.getMatrix().length; i++)
-            for (let j = 0; j < board.getMatrix()[0].length - 1; j++) {
-                if (
-                    board.getMatrix()[i][j] == 2 &&
-                    board.getMatrix()[i][j + 1] == 2
-                )
-                    score += 10;
+        const matrix = board.getMatrix();
 
-                if (
-                    board.getMatrix()[i][j] == 1 &&
-                    board.getMatrix()[i][j + 1] == 1
-                )
-                    score -= 10;
+        for (let i = 0; i < matrix.length; i++) {
+            for (let j = 0; j < matrix[0].length; j++) {
+                for (let p = 1; p < 3; p++) {
+                    if (
+                        j + 3 < matrix[0].length &&
+                        (matrix[i][j] == p || matrix[i][j] == 0) &&
+                        (matrix[i][j + 1] == p || matrix[i][j + 1] == 0) &&
+                        (matrix[i][j + 2] == p || matrix[i][j + 2] == 0) &&
+                        (matrix[i][j + 3] == p || matrix[i][j + 3] == 0)
+                    )
+                        score = score + (p == 1 ? -1 : 1);
+
+                    if (
+                        i + 3 < matrix.length &&
+                        (matrix[i][j] == p || matrix[i][j] == 0) &&
+                        (matrix[i + 1][j] == p || matrix[i + 1][j] == 0) &&
+                        (matrix[i + 2][j] == p || matrix[i + 2][j] == 0) &&
+                        (matrix[i + 3][j] == p || matrix[i + 3][j] == 0)
+                    )
+                        score = score + (p == 1 ? -1 : 1);
+
+                    if (
+                        i + 3 < matrix.length &&
+                        j + 3 < matrix[0].length &&
+                        (matrix[i][j] == p || matrix[i][j] == 0) &&
+                        (matrix[i + 1][j + 1] == p || matrix[i + 1][j + 1] == 0) &&
+                        (matrix[i + 2][j + 2] == p || matrix[i + 2][j + 2] == 0) &&
+                        (matrix[i + 3][j + 3] == p || matrix[i + 3][j + 3] == 0)
+                    )
+                        score = score + (p == 1 ? -1 : 1);
+
+                    if (
+                        i - 3 >= 0 &&
+                        j - 3 >= 0 &&
+                        (matrix[i][j] == p || matrix[i][j] == 0) &&
+                        (matrix[i - 1][j - 1] == p || matrix[i - 1][j - 1] == 0) &&
+                        (matrix[i - 2][j - 2] == p || matrix[i - 2][j - 2] == 0) &&
+                        (matrix[i - 3][j - 3] == p || matrix[i - 3][j - 3] == 0)
+                    )
+                        score = score + (p == 1 ? -1 : 1);
+                }
             }
-
-        for (let j = 0; j < board.getMatrix()[0].length; j++)
-            for (let i = 0; i < board.getMatrix().length - 1; i++) {
-                if (
-                    board.getMatrix()[i][j] == 2 &&
-                    board.getMatrix()[i + 1][j] == 2
-                )
-                    score += 10;
-
-                if (
-                    board.getMatrix()[i][j] == 1 &&
-                    board.getMatrix()[i + 1][j] == 1
-                )
-                    score -= 10;
-            }
-
-        for (let i = 1; i < board.getMatrix().length; i++)
-            for (let j = 0; j < board.getMatrix()[i].length - 1; j++) {
-                if (
-                    board.getMatrix()[i][j] == 2 &&
-                    board.getMatrix()[i - 1][j + 1] == 2
-                )
-                    score += 10;
-
-                if (
-                    board.getMatrix()[i][j] == 1 &&
-                    board.getMatrix()[i - 1][j + 1] == 1
-                )
-                    score -= 10;
-            }
-
-        for (let i = 1; i < board.getMatrix().length; i++)
-            for (let j = 1; j < board.getMatrix()[i].length; j++) {
-                if (
-                    board.getMatrix()[i][j] == 2 &&
-                    board.getMatrix()[i - 1][j - 1] == 2
-                )
-                    score += 10;
-
-                if (
-                    board.getMatrix()[i][j] == 1 &&
-                    board.getMatrix()[i - 1][j - 1] == 1
-                )
-                    score -= 10;
-            }
+        }
 
         return score;
     }
