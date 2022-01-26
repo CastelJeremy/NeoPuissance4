@@ -12,6 +12,7 @@ class GameModel extends EventEmitter {
         this.state = 0;
         this.turn = null;
         this.startingTurn = 'one';
+        this.difficulty = 'easy';
 
         this.playerOne.on('colorUpdate', () =>
             this.emit('updateBoard', {
@@ -54,13 +55,27 @@ class GameModel extends EventEmitter {
         this.emit('starterUpdate', this.startingTurn);
     }
 
+    getDifficulty() {
+        return this.difficulty;
+    }
+
+    setDifficulty(difficulty) {
+        this.difficulty = difficulty;
+
+        if (this.playerTwo instanceof BotModel)
+            this.playerTwo.setDifficulty(difficulty);
+    }
+
     toggleBot() {
         const oldPlayerTwo = this.playerTwo;
 
         if (this.playerTwo instanceof BotModel) {
             this.playerTwo = new PlayerModel(oldPlayerTwo.getColor());
         } else {
-            this.playerTwo = new BotModel(oldPlayerTwo.getColor());
+            this.playerTwo = new BotModel(
+                oldPlayerTwo.getColor(),
+                this.difficulty
+            );
         }
 
         if (this.turn === oldPlayerTwo) this.turn = this.playerTwo;

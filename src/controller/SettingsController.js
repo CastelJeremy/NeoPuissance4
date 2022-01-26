@@ -15,6 +15,10 @@ class SettingsController {
             model.setStartingTurn(playerValue);
         });
 
+        view.on('difficultyUpdate', (difficulty) => {
+            model.setDifficulty(difficulty);
+        });
+
         view.on('botUpdate', (enable) => {
             model.toggleBot();
         });

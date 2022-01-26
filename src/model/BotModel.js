@@ -1,8 +1,15 @@
 import PlayerModel from './PlayerModel.js';
 
 class Bot extends PlayerModel {
-    constructor(color) {
+    constructor(color, difficulty) {
         super(color);
+        this.difficulty =
+            difficulty == 'easy' ? 1 : difficulty == 'medium' ? 2 : 4;
+    }
+
+    setDifficulty(difficulty) {
+        this.difficulty =
+            difficulty == 'easy' ? 1 : difficulty == 'medium' ? 2 : 4;
     }
 
     play(board) {
@@ -20,7 +27,7 @@ class Bot extends PlayerModel {
 
                 const posEval = this.minimax(
                     clone,
-                    4,
+                    this.difficulty,
                     -Infinity,
                     Infinity,
                     true
@@ -45,7 +52,7 @@ class Bot extends PlayerModel {
         let score = 0;
 
         if (board.isConnected(2)) return Infinity;
-        
+
         if (board.isConnected(1)) return -Infinity;
 
         const matrix = board.getMatrix();

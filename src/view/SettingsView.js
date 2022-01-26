@@ -15,6 +15,7 @@ class SettingsView extends EventEmitter {
         this.playerOneColorElement.value = gameModel.getPlayerOne().getColor();
         this.playerTwoColorElement.value = gameModel.getPlayerTwo().getColor();
         this.playerStartingElement.value = gameModel.getStartingTurn();
+        this.difficultyElement.value = gameModel.getDifficulty();
         this.botElement.checked = false;
 
         this.playerOneColorElement.addEventListener('change', (event) =>
@@ -26,6 +27,9 @@ class SettingsView extends EventEmitter {
         this.playerStartingElement.addEventListener('change', (event) =>
             this.emit('starterUpdate', event.target.value)
         );
+        this.difficultyElement.addEventListener('change', (event) => {
+            this.emit('difficultyUpdate', event.target.value);
+        });
         this.botElement.addEventListener('change', (event) =>
             this.emit('botUpdate', event.checked)
         );
