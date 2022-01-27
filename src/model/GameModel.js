@@ -88,6 +88,8 @@ class GameModel extends EventEmitter {
             })
         );
 
+        this.emit('scoreUpdate');
+
         if (this.turn instanceof BotModel)
             this.play(this.turn.play(this.board));
     }
@@ -129,6 +131,8 @@ class GameModel extends EventEmitter {
     checkBoard() {
         if (this.board.isConnected(this.turn === this.playerOne ? 1 : 2)) {
             this.state = 2;
+            this.turn.addScore();
+            this.emit('scoreUpdate');
             this.emit('stateWin', this.turn === this.playerOne ? 1 : 2);
         } else if (this.board.isFull()) {
             this.state = 3;
