@@ -11,6 +11,7 @@ class SettingsView extends EventEmitter {
             settingsElement.querySelector('#startingP');
         this.difficultyElement = settingsElement.querySelector('#difficulty');
         this.botElement = settingsElement.querySelector('#bot');
+        this.restartElement = settingsElement.querySelector('#restartButton');
 
         this.playerOneColorElement.value = gameModel.getPlayerOne().getColor();
         this.playerTwoColorElement.value = gameModel.getPlayerTwo().getColor();
@@ -33,6 +34,9 @@ class SettingsView extends EventEmitter {
         this.botElement.addEventListener('change', (event) =>
             this.emit('botUpdate', event.checked)
         );
+        this.restartElement.addEventListener('click', () => {
+            this.emit('restartClick');
+        });
 
         gameModel.on(
             'starterUpdate',

@@ -22,6 +22,8 @@ class SettingsController {
         view.on('botUpdate', (enable) => {
             model.toggleBot();
         });
+
+        view.on('restartClick', () => model.start());
     }
 }
 
