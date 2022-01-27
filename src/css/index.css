@@ -194,3 +194,20 @@ select {
 select option {
     color: black;
 }
+
+
+#scoreBox {
+    position: absolute;
+    right: 0;
+    top: 30%;
+    margin: 2%;
+    padding: 1%;
+    color: #fff;
+    text-shadow: 0 0 7px #fff, 0 0 10px #fff, 0 0 21px #fff, 0 0 42px #0fa,
+    0 0 82px #0fa, 0 0 92px #0fa, 0 0 102px #0fa, 0 0 151px #0fa;
+    text-align: center;
+    font-family: NeonTubes, serif;
+    width: 15%;
+    display: flex;
+    font-size: 3em;
+}
