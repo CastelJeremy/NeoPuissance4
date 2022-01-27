@@ -30,17 +30,12 @@ class Bot extends PlayerModel {
                     this.difficulty,
                     -Infinity,
                     Infinity,
-                    true
+                    false
                 );
 
-                if (bestEval < posEval) {
+                if (bestEval <= posEval) {
                     bestPos = columnId;
                     bestEval = posEval;
-                } else if (bestEval == posEval) {
-                    bestPos =
-                        Math.floor(Math.random() * 10) >= 3
-                            ? bestPos
-                            : columnId;
                 }
             }
         }
@@ -51,15 +46,12 @@ class Bot extends PlayerModel {
     evaluation(board) {
         let score = 0;
 
-        if (board.isConnected(2)) return Infinity;
-
-        if (board.isConnected(1)) return -Infinity;
-
         const matrix = board.getMatrix();
 
         for (let i = 0; i < matrix.length; i++) {
             for (let j = 0; j < matrix[0].length; j++) {
                 for (let p = 1; p < 3; p++) {
+                    // Number of possible win
                     if (
                         j + 3 < matrix[0].length &&
                         (matrix[i][j] == p || matrix[i][j] == 0) &&
@@ -82,8 +74,10 @@ class Bot extends PlayerModel {
                         i + 3 < matrix.length &&
                         j + 3 < matrix[0].length &&
                         (matrix[i][j] == p || matrix[i][j] == 0) &&
-                        (matrix[i + 1][j + 1] == p || matrix[i + 1][j + 1] == 0) &&
-                        (matrix[i + 2][j + 2] == p || matrix[i + 2][j + 2] == 0) &&
+                        (matrix[i + 1][j + 1] == p ||
+                            matrix[i + 1][j + 1] == 0) &&
+                        (matrix[i + 2][j + 2] == p ||
+                            matrix[i + 2][j + 2] == 0) &&
                         (matrix[i + 3][j + 3] == p || matrix[i + 3][j + 3] == 0)
                     )
                         score = score + (p == 1 ? -1 : 1);
@@ -92,11 +86,88 @@ class Bot extends PlayerModel {
                         i - 3 >= 0 &&
                         j - 3 >= 0 &&
                         (matrix[i][j] == p || matrix[i][j] == 0) &&
-                        (matrix[i - 1][j - 1] == p || matrix[i - 1][j - 1] == 0) &&
-                        (matrix[i - 2][j - 2] == p || matrix[i - 2][j - 2] == 0) &&
+                        (matrix[i - 1][j - 1] == p ||
+                            matrix[i - 1][j - 1] == 0) &&
+                        (matrix[i - 2][j - 2] == p ||
+                            matrix[i - 2][j - 2] == 0) &&
                         (matrix[i - 3][j - 3] == p || matrix[i - 3][j - 3] == 0)
                     )
                         score = score + (p == 1 ? -1 : 1);
+
+                    // Will it block a possible move
+                    if (
+                        j + 3 < matrix[0].length &&
+                        ((matrix[i][j] == p &&
+                            matrix[i][j + 1] == 3 - p &&
+                            matrix[i][j + 2] == 3 - p &&
+                            matrix[i][j + 3] == 3 - p) ||
+                            (matrix[i][j] == 3 - p &&
+                                matrix[i][j + 1] == p &&
+                                matrix[i][j + 2] == 3 - p &&
+                                matrix[i][j + 3] == 3 - p) ||
+                            (matrix[i][j] == 3 - p &&
+                                matrix[i][j + 1] == 3 - p &&
+                                matrix[i][j + 2] == p &&
+                                matrix[i][j + 3] == 3 - p) ||
+                            (matrix[i][j] == 3 - p &&
+                                matrix[i][j + 1] == 3 - p &&
+                                matrix[i][j + 2] == 3 - p &&
+                                matrix[i][j + 3] == p))
+                    )
+                        score = score + (p == 1 ? -10 : 10);
+
+                    if (
+                        i + 3 < matrix.length &&
+                        matrix[i][j] == 3 - p &&
+                        matrix[i + 1][j] == 3 - p &&
+                        matrix[i + 2][j] == 3 - p &&
+                        matrix[i + 3][j] == p
+                    )
+                        score = score + (p == 1 ? -10 : 10);
+
+                    if (
+                        i + 3 < matrix.length &&
+                        j + 3 < matrix[0].length &&
+                        ((matrix[i][j] == p &&
+                            matrix[i + 1][j + 1] == 3 - p &&
+                            matrix[i + 2][j + 2] == 3 - p &&
+                            matrix[i + 3][j + 3] == 3 - p) ||
+                            (matrix[i][j] == 3 - p &&
+                                matrix[i + 1][j + 1] == p &&
+                                matrix[i + 2][j + 2] == 3 - p &&
+                                matrix[i + 3][j + 3] == 3 - p) ||
+                            (matrix[i][j] == 3 - p &&
+                                matrix[i + 1][j + 1] == 3 - p &&
+                                matrix[i + 2][j + 2] == p &&
+                                matrix[i + 3][j + 3] == 3 - p) ||
+                            (matrix[i][j] == 3 - p &&
+                                matrix[i + 1][j + 1] == 3 - p &&
+                                matrix[i + 2][j + 2] == 3 - p &&
+                                matrix[i + 3][j + 3] == p))
+                    )
+                        score = score + (p == 1 ? -10 : 10);
+
+                    if (
+                        i - 3 > 0 &&
+                        j - 3 > 0 &&
+                        ((matrix[i][j] == p &&
+                            matrix[i - 1][j - 1] == 3 - p &&
+                            matrix[i - 2][j - 2] == 3 - p &&
+                            matrix[i - 3][j - 3] == 3 - p) ||
+                            (matrix[i][j] == 3 - p &&
+                                matrix[i - 1][j - 1] == p &&
+                                matrix[i - 2][j - 2] == 3 - p &&
+                                matrix[i - 3][j - 3] == 3 - p) ||
+                            (matrix[i][j] == 3 - p &&
+                                matrix[i - 1][j - 1] == 3 - p &&
+                                matrix[i - 2][j - 2] == p &&
+                                matrix[i - 3][j - 3] == 3 - p) ||
+                            (matrix[i][j] == 3 - p &&
+                                matrix[i - 1][j - 1] == 3 - p &&
+                                matrix[i - 2][j - 2] == 3 - p &&
+                                matrix[i - 3][j - 3] == p))
+                    )
+                        score = score + (p == 1 ? -10 : 10);
                 }
             }
         }
