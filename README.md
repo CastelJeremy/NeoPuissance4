@@ -14,7 +14,7 @@ Inside the `src` directory, run the following command :
 php -S 127.0.0.1:8080
 ```
 
-## Porject Architecture
+## Project Architecture
 
 ![Classes Architecture](https://raw.githubusercontent.com/CastelJeremy/neon-connect-four/main/docs/classes.png)
 
